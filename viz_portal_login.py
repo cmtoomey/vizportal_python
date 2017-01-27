@@ -77,3 +77,13 @@ if login_response.status_code == 200:
 sc = login_response.headers["Set-Cookie"]
 set_cookie = dict(item.split("=") for item in sc.split(";"))
 xsrf_token, workgroup_session_id = set_cookie[" HttpOnly, XSRF-TOKEN"], set_cookie["workgroup_session_id"]
+#Use this for connections with SSL
+sc = login_response.headers["Set-Cookie"]
+headers = []
+for item in sc.split(";"):
+    print item
+    if "workgroup" in item:
+        headers.append(item.split("=")[1])
+    elif "XSRF" in item:
+        headers.append(item.split("=")[1])
+workgroup_session_id, xsrf_token = headers[0], headers[1]
